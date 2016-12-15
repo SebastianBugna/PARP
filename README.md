@@ -12,3 +12,6 @@ Scratches
 -------
 Antiflicker
 -------
+
+Documentación
+-------
