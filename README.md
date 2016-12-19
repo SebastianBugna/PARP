@@ -1,4 +1,4 @@
-PARP : Plataforma restauración películas deterioradas ![GPL2 License](http://img.shields.io/:license-gpl2-blue.svg?style=flat-square)
+PARP : Plataforma abierta restauración películas deterioradas ![GPL2 License](http://img.shields.io/:license-gpl2-blue.svg?style=flat-square)
 ===========
 
 Estos plugins OFX fueron implementados utilizando:
