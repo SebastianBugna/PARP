@@ -27,9 +27,8 @@ int main(int, char**)
             break;
         }
 
-        cvtColor(frame, frame, CV_BGR2GRAY);
-        Mat src = frame; 
-
+        //cvtColor(frame, frame, CV_BGR2GRAY);
+       
         Mat dst;
 
         int original =0; 
@@ -43,7 +42,7 @@ int main(int, char**)
         int inpaintingMethod=1;
 
 
-        RestoreScratches(src, dst, 
+        RemoveScratches(frame, dst, 
         				detectionMap,  
         				original,  
         				restored, 
@@ -53,16 +52,16 @@ int main(int, char**)
         				inpaintingMethod);
 
 
-/*
+
       //DESPLEIGO RESULTADOS
       namedWindow("ORIGINAL");
-      imshow("ORIGINAL",src);
+      imshow("ORIGINAL",frame);
       moveWindow("ORIGINAL", 0, 0);
       namedWindow("SCRATCHES");
       imshow("SCRATCHES",dst);
-      int nCols = src.cols;
+      int nCols = frame.cols;
       moveWindow("SCRATCHES", nCols+50, 0);
-*/
+
        //capture.release(); //SACAR!!!!!!!!!
 
         if(waitKey(delay)>=0)
