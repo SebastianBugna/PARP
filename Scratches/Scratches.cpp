@@ -18,7 +18,6 @@ bool sortcol2( const vector<float>& v1, const vector<float>& v2 ) {
 //----------------FUNCION AUXILIAR CALCULAR NFA -------------------------------
 float NFA(const vector<int> perfil, const vector<cv::Point> coordenadas, const int c, const int f, const cv::Mat  PM , const long long int  Ntests )
 {
-
 	int largo= f-c+1;;
 	double pm =0; //densidad promedio de todos los pixels de la recta
 	double k0,r; //parametros cota de Hoeffding
