@@ -1,6 +1,6 @@
 PLUGINOBJECTS = RemoveScratches.o  Scratches.o ofxsRectangleInteract.o
 PLUGINNAME = RemoveScratches
-#RESOURCES = net.sf.openfx.VectorGenerator.png net.sf.openfx.VectorGenerator.svg
+RESOURCES = net.sf.openfx.RemoveScratches.png
 
 
 TOP_SRCDIR = ..

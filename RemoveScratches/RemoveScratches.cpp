@@ -665,7 +665,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         BooleanParamDescriptor *param = desc.defineBooleanParam(kParamRestrictToRectangle);
         param->setLabel(kParamRestrictToRectangleLabel);
         param->setHint(kParamRestrictToRectangleHint);
-        param->setDefault(true);
+        param->setDefault(false);
         param->setAnimates(false);
         if (page) {
             page->addChild(*param);

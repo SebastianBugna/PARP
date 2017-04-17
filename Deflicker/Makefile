@@ -1,6 +1,6 @@
 PLUGINOBJECTS = Deflicker.o
 PLUGINNAME = Deflicker
-#RESOURCES = net.sf.openfx.VectorGenerator.png net.sf.openfx.VectorGenerator.svg
+RESOURCES = net.sf.openfx.Deflicker.png 
 
 
 TOP_SRCDIR = ..
