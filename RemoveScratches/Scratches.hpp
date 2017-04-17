@@ -14,7 +14,8 @@
 enum OutputEnum // Parametro de interaccion con el usuario. Opcion de video de salida para funcion RemoverScratches. 
 {
     eOriginal,
-    eDetectionMap,
+    eOverlayDetection,
+    eDetectionMask,
     eRestoration,
 };
 

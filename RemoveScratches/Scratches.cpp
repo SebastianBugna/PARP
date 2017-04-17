@@ -1329,8 +1329,33 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
 
 
     switch(output)
-    {
-        case eDetectionMap: 
+    {   
+        case eDetectionMask: 
+        {  
+            //----------------IMPRIMO DETECCIONES luego de ppo exclusion -------------------------------
+            //Mat cdst3;
+            //cvtColor(src, cdst3, CV_GRAY2BGR); //dst2 guarda detecciones maximales
+            Mat dst_Exc = Mat::zeros(nRows,nCols, CV_8UC3);
+            for (size_t i=0;i<Detecciones_EXC.size();i++){
+
+                int x1=Detecciones_EXC[i][0];
+                int y1=Detecciones_EXC[i][1];
+                int x2=Detecciones_EXC[i][2];
+                int y2=Detecciones_EXC[i][3];
+
+                line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(255,255,255), linesThickness, CV_AA);
+            }
+
+            dst=dst_Exc;
+            
+            dst_Exc.release();
+            bin.release();                                    
+            PM.release();                                    
+            src_bw.release();
+            break; 
+
+        }// fin de eOverlayDetection
+        case eOverlayDetection: 
         {    
 							
             //----------------IMPRIMO DETECCIONES luego de ppo exclusion -------------------------------

@@ -88,8 +88,10 @@ typedef OFX::MultiThread::AutoMutexT<tthread::fast_mutex> AutoMutex;
 #define kParamOutputHint "First adjust the detection and then the restoration parameters."
 #define kParamOutputOptionOriginal "Original"
 #define kParamOutputOptionOriginalHint "Use Original to work with the original video"
-#define kParamOutputOptionDetectionMap "Detection Map"
-#define kParamOutputOptionDetectionMapHint "Use to preview the detected scratches"
+#define kParamOutputOptionOverlayDetection "Overlay Detections"
+#define kParamOutputOptionOverlayDetectionHint "Use to preview the detected scratches on the original image"
+#define kParamOutputOptionDetectionMask "Detection Mask"
+#define kParamOutputOptionDetectionMaskHint "Use to output the isolated detected scratches as a white mask over black bakground. Useful to use the detections with other inpainting plugins."
 #define kParamOutputOptionRestoration "Restoration"
 #define kParamOutputOptionRestorationHint "Use to obtain a restored version of the video without the scratches"
 
@@ -743,12 +745,14 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setLabel(kParamOutputLabel);
         param->setHint(kParamOutputHint);
         assert(param->getNOptions() == eOriginal);
-        param->appendOption(kParamOutputOptionOriginal, kParamOutputOptionOriginalHint);   
-        assert(param->getNOptions() == eDetectionMap);
-        param->appendOption(kParamOutputOptionDetectionMap, kParamOutputOptionDetectionMapHint); 
+        param->appendOption(kParamOutputOptionOriginal, kParamOutputOptionOriginalHint);
+        assert(param->getNOptions() == eOverlayDetection);
+        param->appendOption(kParamOutputOptionOverlayDetection, kParamOutputOptionOverlayDetectionHint);   
+        assert(param->getNOptions() == eDetectionMask);
+        param->appendOption(kParamOutputOptionDetectionMask, kParamOutputOptionDetectionMaskHint); 
         assert(param->getNOptions() == eRestoration);
         param->appendOption(kParamOutputOptionRestoration, kParamOutputOptionRestorationHint);
-        param->setDefault( int(eDetectionMap) );
+        param->setDefault( int(eOverlayDetection) );
         param->setAnimates(false); // cant animate
         
         if (page) {
