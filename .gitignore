@@ -1,0 +1,8 @@
+
+build
+
+*.ofx
+
+*.o
+
+*.plist
