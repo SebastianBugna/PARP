@@ -86,7 +86,7 @@ void BinaryDetection(const cv::Mat src_bw, cv::Mat &bin, const int scratchWidth,
         int ind;
 
         for(int y = 0; y < nRows; y++){ //recorro imagen Src
-            for ( int x = R; x < nCols-R; x++){
+            for ( int x = scratchWidth; x < nCols-scratchWidth; x++){
 
                     tmpPix_g= (int)Ig.at<uchar>(y,x);
 
@@ -977,6 +977,10 @@ void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, 
 
                         	distance=pow(coordenadas2[jj].x-coordenadas1[ii].x,2.0)+pow(coordenadas2[jj].y-coordenadas1[ii].y,2.0);
                         	int d2=pow(minDistance,2);
+
+                            //if (( coordenadas1[ii].x==coordenadas2[jj].x)&&(coordenadas1[ii].y==coordenadas2[jj].y<=minDistance ))
+                            //cercanos=1;
+                            //if (( coordenadas1[ii].x!=coordenadas2[jj].x)&&(( coordenadas1[ii]==coordenadas2[jj])||(distance<=d2 )))//abs(coordenadas1[ii].x- coordenadas2[jj].x)<=10)  /*&&( abs(coordenadas1[ii].y- coordenadas2[jj].y)<=1))*/
                             if (( coordenadas1[ii]==coordenadas2[jj])||(distance<=d2 ))//abs(coordenadas1[ii].x- coordenadas2[jj].x)<=10)  /*&&( abs(coordenadas1[ii].y- coordenadas2[jj].y)<=1))*/
 
                             cercanos=1;
@@ -1168,6 +1172,7 @@ void Maximality(std::vector<std::vector<float> > &Detecciones, std::vector<std::
         } //end IF i
     }// finish FOR i, all the segments analyzed
     //SEGUNDA PASADA BORRA SEGMENTOS POCO SIGNIFICATIVOS QUE INCLUYEN SEGMENTOS QUE SON MAS SINGIFICATIVOS
+    /*
         for (size_t i=0; i<Detecciones.size()-1;i++){
             if ( VerifyMaximality[i]==true ){
                 ppo_i = Detecciones[i][5];
@@ -1184,6 +1189,7 @@ void Maximality(std::vector<std::vector<float> > &Detecciones, std::vector<std::
                 } //end FOR j
             } //end IF i
         }// finish FOR i, all the segments analyzed
+        */
 
         for (size_t i=0;i<Detecciones.size();i++)
         {
@@ -1309,11 +1315,11 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
     BinaryDetection(src_bw,bin, scratchWidth, medianDiffThreshold); //Deteccion binaria per-pixel
 
     Mat PM;
-    PixelDensity3(bin,PM); //Calculo mapa densidad pixeles 
+    PixelDensity2(bin,PM); //Calculo mapa densidad pixeles 
     //cout << "corre PixelDensity2" << endl;
 
     //float minLength = round(nRows/10); //largo minimo aceptado para un scratch
-    long long int Ntests = (long long int)nRows*nRows*nCols*40; //Numero de tests para metodologia a contrario
+    long long int Ntests = (long long int)nRows*nRows*nCols*inclination*4; //Numero de tests para metodologia a contrario
         
     //----------------TRANSFORMADA DE HOUGH -------------------------------
 
@@ -1346,6 +1352,7 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
                 line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(255,255,255), linesThickness, CV_AA);
             }
 
+
             dst=dst_Exc;
             
             dst_Exc.release();
@@ -1361,6 +1368,7 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
             //----------------IMPRIMO DETECCIONES luego de ppo exclusion -------------------------------
             //Mat cdst3;
             //cvtColor(src, cdst3, CV_GRAY2BGR); //dst2 guarda detecciones maximales
+            
             Mat dst_Exc = src.clone();
             for (size_t i=0;i<Detecciones_EXC.size();i++){
 
@@ -1371,8 +1379,24 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
 
                 line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(0,0,255), linesThickness, CV_AA);
             }
+            dst=dst_Exc;
+            /*
+            Mat dst_Exc = src.clone();
+            for (size_t i=0;i<Detecciones_MAX.size();i++){
+
+                int x1=Detecciones_MAX[i][0];
+                int y1=Detecciones_MAX[i][1];
+                int x2=Detecciones_MAX[i][2];
+                int y2=Detecciones_MAX[i][3];
+
+                line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(0,0,255), linesThickness, CV_AA);
+            }
 
         	dst=dst_Exc;
+        	*/
+        	//Mat binRGB;
+            //cvtColor(bin, binRGB, CV_GRAY2BGR); //dst2 guarda detecciones maximales
+        	//dst=binRGB;
             
             dst_Exc.release();
             bin.release();                                    
