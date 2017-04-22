@@ -264,15 +264,15 @@ void Deflicker::PixelProcessor( const OFX::RenderArguments &args,
     for (int i = -radio; i <= radio; i++) { // PARA CADA IMAGEN, i=0 es la actual.. etc
         //cout << "i " << i << " radio " << radio << endl;
         //cout << "peso para la imagen actual> " << weights[i+radio] << endl;
-        cv::Mat imgSrt = _histogram_index(args, renderWindow, _srcClip, i, imageSize, true);
         if (weights[i+radio] != 0) {
+        	cv::Mat imgSrt = _histogram_index(args, renderWindow, _srcClip, i, imageSize, true);
             for (int j = 0; j < image_size; j++) {
                 float product = (float)imgSrt.at<uchar>(0,j)  * (float)weights[i+radio];
                 //cout << j << ' ' << (float)imgSrt.at<uchar>(0,j) <<  ' ' << (float)weights[i+radio] << ' ' <<  product << ' ' << common_histogram[j] << ' ' << common_histogram[j] + product << endl;
                 common_histogram[j] += product;
             }
             imgSrt.release(); // libero memoria
-        }
+        } 
     }
 
     cv::Mat dstIdx = _histogram_index(args, renderWindow, _srcClip, 0, imageSize, false); // para la imagen actual, calculo los indices
