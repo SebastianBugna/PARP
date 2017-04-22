@@ -935,7 +935,7 @@ void ExclusionPrinciple(std::vector<std::vector<float> > &Detecciones_EXC,std::v
     int cant_Segments=Detecciones_EXC.size();
     double EPS=pow(10.0,nfaThreshold);
     int distance;
-    minDistance=3;
+    //minDistance=3;
 
     vector<bool> ExcludeSegment(Detecciones_EXC.size(),false);
 
