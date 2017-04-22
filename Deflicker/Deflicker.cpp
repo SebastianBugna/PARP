@@ -131,7 +131,7 @@ void Deflicker::readOFX_toOpenCV(const OFX::Image* srcImage, const OfxRectI & re
         switch( srcImage->getPixelComponents() ) {
 
             case OFX::ePixelComponentRGB : { //OFX::ePixelComponentRGB 3 canales
-                cout << "primer case" << endl;
+                //cout << "primer case" << endl;
                 for(int y = renderWindow.y1; y < renderWindow.y2; y++) {
                     PIX *srcPix       = (PIX *) srcImage->getPixelAddress(renderWindow.x1, y); // puntero de OFX al comienzo de la fila y
                     float *srcPix_Mat = CVSrcMat.ptr<float>(y);                                // punto a la fila y de cvmat
@@ -145,7 +145,7 @@ void Deflicker::readOFX_toOpenCV(const OFX::Image* srcImage, const OfxRectI & re
             } 
 
             case OFX::ePixelComponentRGBA : { //OFX::ePixelComponentRGBA 4 canales
-                cout << "segundo case" << endl;
+                //cout << "segundo case" << endl;
                 for(int y = renderWindow.y1; y < renderWindow.y2; y++) {
                     PIX *srcPix       = (PIX *) srcImage->getPixelAddress(renderWindow.x1, y); // puntero de OFX al comienzo de la fila y
                     float *srcPix_Mat = CVSrcMat.ptr<float>(y);                                // punto a la fila y de cvmat
@@ -262,7 +262,7 @@ void Deflicker::PixelProcessor( const OFX::RenderArguments &args,
     }    
 
     for (int i = -radio; i <= radio; i++) { // PARA CADA IMAGEN, i=0 es la actual.. etc
-        cout << "i " << i << " radio " << radio << endl;
+        //cout << "i " << i << " radio " << radio << endl;
         //cout << "peso para la imagen actual> " << weights[i+radio] << endl;
         cv::Mat imgSrt = _histogram_index(args, renderWindow, _srcClip, i, imageSize, true);
         if (weights[i+radio] != 0) {

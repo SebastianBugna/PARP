@@ -380,7 +380,8 @@ void PluginRemoveScratches::PixelProcessor(   const OFX::Image* srcImage,
 		                (y<regionOfInterest.y2*renderScale.y)&&
 		                (y>regionOfInterest.y1*renderScale.y) ) { // estoy adentro del rectangulo
 
-                        float *dstPix_Mat = CVdstMat.ptr<float>(y-lowerBound_y);
+                        //float *dstPix_Mat = CVdstMat.ptr<float>(y-lowerBound_y);
+                        float *dstPix_Mat = CVdstMat.ptr<float>(y);
                         dstPix_Mat += (x-lowerBound_x)*3; 
                         
 		                
@@ -427,7 +428,8 @@ void PluginRemoveScratches::PixelProcessor(   const OFX::Image* srcImage,
 		                (y<regionOfInterest.y2*renderScale.y)&&
 		                (y>regionOfInterest.y1*renderScale.y) ) { // estoy adentro del rectangulo
 
-                        float *dstPix_Mat = CVdstMat.ptr<float>(y-lowerBound_y);
+                        //float *dstPix_Mat = CVdstMat.ptr<float>(y-lowerBound_y);
+                        float *dstPix_Mat = CVdstMat.ptr<float>(y);
                         dstPix_Mat += (x-lowerBound_x)*3; 
 
                         
@@ -514,6 +516,12 @@ PluginRemoveScratches::render(const OFX::RenderArguments &args)
     _size->getValueAtTime(args.time, regionOfInterest.x2, regionOfInterest.y2);
     regionOfInterest.x2 += regionOfInterest.x1;
     regionOfInterest.y2 += regionOfInterest.y1;
+
+    //int sizeY=(int)regionOfInterest.y2;
+    //_minLength->getValueAtTime(args.time, sizeY);
+    //int minLength=30;
+    //_minLength->getValueAtTime(args.time, minLength);
+
         
 
     PixelProcessor<float, 1>(src.get(), args.renderScale, args.renderWindow, dst.get(), srcComponentCount, nfaThreshold, houghThreshold, scratchWidth, medianDiffThreshold, inclination, minLength, minDistance, linesThickness, output, inpaintingMethod, inpaintingRadius, regionOfInterest );
@@ -644,6 +652,9 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
     // Source clip only in the filter context
     // create the mandated source clip
     ClipDescriptor *srcClip = desc.defineClip(kOfxImageEffectSimpleSourceClipName);
+    //OfxPropertySetHandle desc->getPropertySet();
+    //PropertySet desc->getPropertySet();
+    
 
     srcClip->addSupportedComponent(ePixelComponentRGBA);
     srcClip->addSupportedComponent(ePixelComponentRGB);
@@ -781,7 +792,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParamHoughHint);
         param->setRange(1, 500);
         param->setDisplayRange(1, 500);
-        param->setDefault(100);
+        param->setDefault(120);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);
@@ -807,8 +818,8 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         IntParamDescriptor* param = desc.defineIntParam(kParamMedianDiffThreshold);
         param->setLabel(kParamMedianDiffThresholdLabel);
         param->setHint(kParamMedianDiffThresholdHint);
-        param->setRange(1, 30);
-        param->setDisplayRange(1, 30);
+        param->setRange(1, 6);
+        param->setDisplayRange(1, 6);
         param->setDefault(3);
         param->setAnimates(true);
         if (page) {
@@ -823,6 +834,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParaminclinationHint);
         param->setRange(1, 20);
         param->setDisplayRange(1, 20);
+        param->setDefault(5);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);
@@ -836,7 +848,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParamMinLengthHint);
         param->setRange(1, 100);
         param->setDisplayRange(1, 100);
-        param->setDefault(12);
+        //param->setDefault(12);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);
@@ -850,7 +862,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParamMinDistanceHint);
         param->setRange(0, 20);
         param->setDisplayRange(0, 20);
-        param->setDefault(0);
+        param->setDefault(3);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);

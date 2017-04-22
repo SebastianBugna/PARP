@@ -45,9 +45,7 @@ void PixelDensity2(cv::Mat bin, cv::Mat &PM);
 
 void PixelDensity3(cv::Mat bin, cv::Mat &PM);
 
-void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, std::vector<std::vector<float> > &Detecciones_EXC, const cv::Mat bin, const cv::Mat PM, const int nfaThreshold, const long long int  Ntests, const int minLength, const int minDistance );
-
-
+void ExclusionPrinciple( std::vector<std::vector<float> > &Detecciones_EXC, std::vector<std::vector<float> > &Detecciones_EXCOUT, const cv::Mat bin, const cv::Mat PM, const int nfaThreshold, const long long int  Ntests, const int minLength, const int minDistance );
 
 
 #endif

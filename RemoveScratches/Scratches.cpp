@@ -926,7 +926,7 @@ void PixelDensity3(cv::Mat bin,cv::Mat &PM){
 
 }
 
-void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, std::vector<std::vector<float> > &Detecciones_EXC, const cv::Mat bin, const cv::Mat PM, const int nfaThreshold, const long long int  Ntests,const int minLength, int minDistance ){
+void ExclusionPrinciple(std::vector<std::vector<float> > &Detecciones_EXC,std::vector<std::vector<float> > &Detecciones_EXCOUT, const cv::Mat bin, const cv::Mat PM, const int nfaThreshold, const long long int  Ntests,const int minLength, int minDistance ){
 
     sort(Detecciones_EXC.begin(), Detecciones_EXC.end(),sortcol2); //ORDENO NFA DESCENDENTE
  
@@ -935,7 +935,7 @@ void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, 
     int cant_Segments=Detecciones_EXC.size();
     double EPS=pow(10.0,nfaThreshold);
     int distance;
-    //minDistance=10;
+    minDistance=3;
 
     vector<bool> ExcludeSegment(Detecciones_EXC.size(),false);
 
@@ -961,9 +961,9 @@ void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, 
 
                 if (ExcludeSegment[j] != true)
                 {
-                	vector<int> perfil2; //Segment 2 ----
-                	vector<Point> coordenadas2;
-                	SegmentIterator(Detecciones_EXC, j, bin, coordenadas2, perfil2);
+                    vector<int> perfil2; //Segment 2 ----
+                    vector<Point> coordenadas2;
+                    SegmentIterator(Detecciones_EXC, j, bin, coordenadas2, perfil2);
 
 
 
@@ -975,12 +975,8 @@ void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, 
 
                         for (size_t jj=0;jj<coordenadas2.size();jj++){
 
-                        	distance=pow(coordenadas2[jj].x-coordenadas1[ii].x,2.0)+pow(coordenadas2[jj].y-coordenadas1[ii].y,2.0);
-                        	int d2=pow(minDistance,2);
-
-                            //if (( coordenadas1[ii].x==coordenadas2[jj].x)&&(coordenadas1[ii].y==coordenadas2[jj].y<=minDistance ))
-                            //cercanos=1;
-                            //if (( coordenadas1[ii].x!=coordenadas2[jj].x)&&(( coordenadas1[ii]==coordenadas2[jj])||(distance<=d2 )))//abs(coordenadas1[ii].x- coordenadas2[jj].x)<=10)  /*&&( abs(coordenadas1[ii].y- coordenadas2[jj].y)<=1))*/
+                            distance=pow(coordenadas2[jj].x-coordenadas1[ii].x,2.0)+pow(coordenadas2[jj].y-coordenadas1[ii].y,2.0);
+                            int d2=pow(minDistance,2);
                             if (( coordenadas1[ii]==coordenadas2[jj])||(distance<=d2 ))//abs(coordenadas1[ii].x- coordenadas2[jj].x)<=10)  /*&&( abs(coordenadas1[ii].y- coordenadas2[jj].y)<=1))*/
 
                             cercanos=1;
@@ -998,108 +994,112 @@ void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, 
 
                    if (cant_intersecciones !=0)
                     {
-                	   ExcludeSegment[i]=true;
-                    	size_t k =1; //recalculo NFA
-                    	int c,f;
-                    	c=f=-1;
-                    	float NFA_nueva;
-                    	int cant_Segments_nuevos = 0;
+                       ExcludeSegment[i]=true;
 
-                    	if ((Intersected[0]==true) && (Intersected[Intersected.size()-1]==true)){ //todos los pixeles son intersecciones
-                    		ExcludeSegment[i]=true;
-                    	}
-                    	else if (Intersected[0]==true)
-						{// la interseccion esta en el principio del scratch
+                        int c,f;
+                        c=f=-1;
+                        float NFA_nueva;
+                        int cant_Segments_nuevos = 0;
 
-							f=Intersected.size()-1;
-							c=0;
-							while(Intersected[c]==true){
-								c++;
-							}
+                        if ((Intersected[0]==true) && (Intersected[Intersected.size()-1]==true)){ //todos los pixeles son intersecciones
+                            ExcludeSegment[i]=true;
+                        }
+                        else if (Intersected[0]==true)
+                        {// la interseccion esta en el principio del scratch
 
-							NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
+                            f=Intersected.size()-1;
+                            c=0;
+                            while(Intersected[c]==true){
+                                c++;
+                            }
 
-							if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
-							{//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
-								cant_Segments_nuevos++;
+                            NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
 
-								vector<float> Segment;
-								Segment.push_back( (coordenadas1[ c ].x) );
-								Segment.push_back( (coordenadas1[ c ].y) );
-								Segment.push_back( (coordenadas1[ f ].x)  );
-								Segment.push_back( (coordenadas1[ f ].y)  );
-								Segment.push_back( NFA_nueva );
+                            if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
+                            {//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
+                                cant_Segments_nuevos++;
 
-								Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
-							}
+                                vector<float> Segment;
+                                Segment.push_back( (coordenadas1[ c ].x) );
+                                Segment.push_back( (coordenadas1[ c ].y) );
+                                Segment.push_back( (coordenadas1[ f ].x)  );
+                                Segment.push_back( (coordenadas1[ f ].y)  );
+                                Segment.push_back( NFA_nueva );
 
-						}else if(Intersected[Intersected.size()-1]==true){ //la interseccion esta al final del scratch
-							c=0;
-							f=0;
-							while(Intersected[f]==false){
-								f++;
-							}
-							f--;
-							NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
+                                Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
+                                ExcludeSegment.push_back(false); // agrego segmento no exlcuido
+                            }
 
-							if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
-							{//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
-								cant_Segments_nuevos++;
+                        }else if(Intersected[Intersected.size()-1]==true){ //la interseccion esta al final del scratch
+                            c=0;
+                            f=0;
+                            while(Intersected[f]==false){
+                                f++;
+                            }
+                            f--;
+                            NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
 
-								vector<float> Segment;
-								Segment.push_back( (coordenadas1[ c ].x) );
-								Segment.push_back( (coordenadas1[ c ].y) );
-								Segment.push_back( (coordenadas1[ f ].x)  );
-								Segment.push_back( (coordenadas1[ f ].y)  );
-								Segment.push_back( NFA_nueva );
+                            if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
+                            {//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
+                                cant_Segments_nuevos++;
 
-								Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
-							}
+                                vector<float> Segment;
+                                Segment.push_back( (coordenadas1[ c ].x) );
+                                Segment.push_back( (coordenadas1[ c ].y) );
+                                Segment.push_back( (coordenadas1[ f ].x)  );
+                                Segment.push_back( (coordenadas1[ f ].y)  );
+                                Segment.push_back( NFA_nueva );
 
-						}else{//la interseccion esta en el medio del scratch
-							//primer tramo
-							c=0;
-							f=0;
-							while(Intersected[f]==false){
-								f++;
-							}
-							f--;
-							NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
+                                Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
+                                ExcludeSegment.push_back(false);
+                            }
 
-							if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
-							{//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
-								cant_Segments_nuevos++;
+                        }else{//la interseccion esta en el medio del scratch
+                            //primer tramo
+                            c=0;
+                            f=0;
+                            while(Intersected[f]==false){
+                                f++;
+                            }
+                            f--;
+                            NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
 
-								vector<float> Segment;
-								Segment.push_back( (coordenadas1[ c ].x) );
-								Segment.push_back( (coordenadas1[ c ].y) );
-								Segment.push_back( (coordenadas1[ f ].x)  );
-								Segment.push_back( (coordenadas1[ f ].y)  );
-								Segment.push_back( NFA_nueva );
+                            if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
+                            {//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
+                                cant_Segments_nuevos++;
 
-								Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
-							}
-							c=f+1;
-							while(Intersected[c]==true){
-								c++;
-							}
-							NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
+                                vector<float> Segment;
+                                Segment.push_back( (coordenadas1[ c ].x) );
+                                Segment.push_back( (coordenadas1[ c ].y) );
+                                Segment.push_back( (coordenadas1[ f ].x)  );
+                                Segment.push_back( (coordenadas1[ f ].y)  );
+                                Segment.push_back( NFA_nueva );
 
-							if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
-							{//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
-								cant_Segments_nuevos++;
+                                Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
+                                ExcludeSegment.push_back(false);
+                            }
+                            c=f+1;
+                            while(Intersected[c]==true){
+                                c++;
+                            }
+                            NFA_nueva= NFA(perfil1,coordenadas1,c,f,PM,Ntests);
 
-								vector<float> Segment;
-								Segment.push_back( (coordenadas1[ c ].x) );
-								Segment.push_back( (coordenadas1[ c ].y) );
-								Segment.push_back( (coordenadas1[ f ].x)  );
-								Segment.push_back( (coordenadas1[ f ].y)  );
-								Segment.push_back( NFA_nueva );
+                            if (( NFA_nueva<EPS) && (NFA_nueva!=0) && (f-c+1 > minDistance))
+                            {//Segment SIGNIFICATIVO LO GUARDO EN UNA TABLA JUNTO A SU NFA
+                                cant_Segments_nuevos++;
 
-								Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
-							}
+                                vector<float> Segment;
+                                Segment.push_back( (coordenadas1[ c ].x) );
+                                Segment.push_back( (coordenadas1[ c ].y) );
+                                Segment.push_back( (coordenadas1[ f ].x)  );
+                                Segment.push_back( (coordenadas1[ f ].y)  );
+                                Segment.push_back( NFA_nueva );
 
-						}
+                                Detecciones_EXC.push_back(Segment); // agrego nuevo Segment
+                                ExcludeSegment.push_back(false);
+                            }
+
+                        }
 
                         cant_Segments = Detecciones_EXC.size(); //actualizo tamano array
                         if (FLAG_intersect ==1)
@@ -1121,11 +1121,12 @@ void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, 
 
     
 
-        vector<vector<float> > Detecciones_EXC2; //guardara los Segments ppo exclusion.
+        //vector<vector<float> > Detecciones_EXC2; //guardara los Segments ppo exclusion.
 
         for (size_t ii=0;ii<Detecciones_EXC.size();ii++)
         {
-
+            //if (Detecciones_EXC[ii].empty())
+            //  break; //Corrige bug.
             if (ExcludeSegment[ii] != true)
             {
 
@@ -1136,13 +1137,28 @@ void ExclusionPrinciple(const std::vector<std::vector<float> > Detecciones_MAX, 
                 Segment.push_back( Detecciones_EXC[ii][3] ); //Y2
                 Segment.push_back( Detecciones_EXC[ii][4] ); //NFA
 
-                Detecciones_EXC2.push_back(Segment); //Ingreso Segment 
+                Detecciones_EXCOUT.push_back(Segment); //Ingreso Segment
 
             }
 
         }
+        /*
+        Detecciones_EXC.clear();
+        for (size_t ii=0;ii<Detecciones_EXC2.size();ii++)
+        {
 
-        Detecciones_EXC = Detecciones_EXC2;
+                Detecciones_EXC.push_back(Detecciones_EXC2[ii]); //Ingreso Segment
+
+
+
+          }
+    */
+
+        //Detecciones_EXCOUT = Detecciones_EXC2;
+        //foo.swap(bar);
+
+        //Detecciones_EXC.swap(Detecciones_EXC2);
+    
 
 } //ExlusionPrinciple
 
@@ -1172,7 +1188,6 @@ void Maximality(std::vector<std::vector<float> > &Detecciones, std::vector<std::
         } //end IF i
     }// finish FOR i, all the segments analyzed
     //SEGUNDA PASADA BORRA SEGMENTOS POCO SIGNIFICATIVOS QUE INCLUYEN SEGMENTOS QUE SON MAS SINGIFICATIVOS
-    /*
         for (size_t i=0; i<Detecciones.size()-1;i++){
             if ( VerifyMaximality[i]==true ){
                 ppo_i = Detecciones[i][5];
@@ -1189,7 +1204,6 @@ void Maximality(std::vector<std::vector<float> > &Detecciones, std::vector<std::
                 } //end FOR j
             } //end IF i
         }// finish FOR i, all the segments analyzed
-        */
 
         for (size_t i=0;i<Detecciones.size();i++)
         {
@@ -1307,6 +1321,7 @@ void MaximalMeaningfulScratchGrouping(vector<vector<float> > &Detecciones_MAX, c
 void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, const int thresholdHough, const int scratchWidth, const int medianDiffThreshold, const int inclination, const int minLength, const int minDistance,const int linesThickness,const int inpaintingRadius, InpaintingEnum inpaintingMethod, OutputEnum output)
 {
 //src matriz en RG
+
     int nRows = src.rows;
     int nCols = src.cols;
     
@@ -1325,13 +1340,18 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
 
     vector<vector<float> > lines_Hough;
     HoughSpeedUp(bin, thresholdHough, inclination, lines_Hough); //devuelve lineas casi verticales de acuerdo a parametros
-
+    
     vector<vector<float> > Detecciones_MAX; //guardara los Segments signficativos maximales metodologia a contrario.
     MaximalMeaningfulScratchGrouping(Detecciones_MAX,bin,PM,nfaThreshold,lines_Hough,Ntests,minLength);
-
     /// PRINCIPIO DE EXCLUSION  ---------------------------------------
+    //vector<vector<float> > Detecciones_EXC = Detecciones_MAX; //guardara los Segments ppo exclusion
+    //ExclusionPrinciple(Detecciones_MAX, Detecciones_EXC,bin,PM,nfaThreshold,Ntests,minLength, minDistance);
+   
     vector<vector<float> > Detecciones_EXC = Detecciones_MAX; //guardara los Segments ppo exclusion
-    ExclusionPrinciple(Detecciones_MAX, Detecciones_EXC,bin,PM,nfaThreshold,Ntests,minLength, minDistance);
+    vector<vector<float> > Detecciones_EXCOUT;
+    ExclusionPrinciple(Detecciones_EXC,Detecciones_EXCOUT, bin,PM,nfaThreshold, Ntests,minLength, minDistance);
+   
+    Detecciones_EXC=Detecciones_EXCOUT;
 
 
     switch(output)
