@@ -5,9 +5,9 @@ Proyecto de grado desarrollado en la Facultad de Ingeniería de la Universidad d
 Fue desarrollado por los estudiantes de grado Sebastián Bugna y Juan Andrés Friss de Kereki.
 
 Estos plugins OFX fueron implementados utilizando:
-[Natron 2.2.7](http://natron.inria.fr)
-[OpenFX](http://openeffects.org)
-[OpenCV](http://opencv.org)
+[Natron 2.2.7](http://natron.inria.fr), 
+[OpenFX](http://openeffects.org), 
+[OpenCV](http://opencv.org).
 
 Detección semi-automática de cortes
 -------
@@ -20,15 +20,15 @@ Eliminación Scratches
 -------
 
 Permite detectar y posteriormente reparar los scratches presentes en películas deterioradas.
-La implementación del algoritmo de detección de scratches utiliza la propuesta del artículo: ``Robust Automatic Line Scratch Detection in Films'' de Andrés Almansa y colegas (2014), que utiliza una metodología a contrario para detectar los scratches.
+La implementación del algoritmo de detección de scratches utiliza la propuesta del artículo: `Robust Automatic Line Scratch Detection in Films` de Andrés Almansa y colegas, que utiliza una metodología a contrario para detectar los scratches.
 La restauración de los scratches se realiza mediante algoritmos de image inpainting disponibles en OpenCV.
 
 
 Deflicker
 -------
 Permite corregir el efecto de flicker de luminancia en secuencias de video.
-Se basa en los artículos ``Implementation of the Midway Image Equalization'' y ``Stabilization of flicker-like effects in image sequences
-through local contrast correction'' de Julie Delon y colegas.
+Se basa en los artículos `Implementation of the Midway Image Equalization` y `Stabilization of flicker-like effects in image sequences
+through local contrast correction` de Julie Delon y colegas.
 
 
 Manual de Usuario
