@@ -31,11 +31,6 @@ Se basa en los artículos `Implementation of the Midway Image Equalization` y `S
 through local contrast correction` de Julie Delon y colegas.
 
 
-Manual de Usuario
-------
-Se proveen instrucciones para utilizar e instalar todas las herramientas desarrolladas, así como diferentes funcionalidades de Natron que permiten realizar la restauración de secuencias.
-
-
 ### Compilación en Linux
 Se utilizan Makefiles, ejecutando en un terminal los comandos:
 - `make [opciones]`
@@ -52,3 +47,8 @@ Los plugins compilados se ubican en subdirectorios llamados, por ejemplos: Linux
 En cada uno de estos subdiretorios se crea un directorio `*.bundle`. 
 Se puede cargar en Natron los plugins moviendo el directorio `*.bundle` a la carpeta `/usr/OFX/Plugins`.
 Alternativamente se puede utilizar la opción en Natron: `Edit>>Preferences...>>Plug-ins>>OpenFX-Plugins search path` donde se agrega la ruta a el directorio `*.bundle`
+
+
+Manual de Usuario
+------
+Se proveen instrucciones para utilizar e instalar todas las herramientas desarrolladas, así como diferentes funcionalidades de Natron que permiten realizar la restauración de secuencias.
