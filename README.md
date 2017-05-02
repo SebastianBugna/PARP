@@ -16,7 +16,7 @@ Utiliza el método de suma de diferencias absolutas (SDA) que dadas dos imágene
 Opcionalmente se puede importar una lista de cortes en formato EDL para dividir en planos la secuencia.
 
 
-Eliminación Scratches
+Eliminación de scratches
 -------
 
 Permite detectar y posteriormente reparar los scratches presentes en películas deterioradas.
