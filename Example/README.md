@@ -1,7 +1,3 @@
-PARP : Plataforma abierta restauración películas ![GPL2 License](http://img.shields.io/:license-gpl2-blue.svg?style=flat-square)
-===========
-
-
 Ejemplo
 -------
 
