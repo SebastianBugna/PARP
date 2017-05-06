@@ -9,14 +9,14 @@ Estos plugins OFX fueron implementados utilizando:
 [OpenFX](http://openeffects.org), 
 [OpenCV](http://opencv.org).
 
-Detección semi-automática de cortes
+Detección semi-automática de cortes (ShotCutDetection)
 -------
 Permite detectar y segmentar correctamente una secuencia en sus distintos planos.
 Utiliza el método de suma de diferencias absolutas (SDA) que dadas dos imágenes, calcula su distancia como la suma total de la diferencia píxel a píxel.
 Opcionalmente se puede importar una lista de cortes en formato EDL para dividir en planos la secuencia.
 
 
-Eliminación de scratches
+Eliminación de scratches (RemoveScratches)
 -------
 
 Permite detectar y posteriormente reparar los scratches presentes en películas deterioradas.
@@ -29,6 +29,10 @@ Deflicker
 Permite corregir el efecto de flicker de luminancia en secuencias de video.
 Se basa en los artículos `Implementation of the Midway Image Equalization` y `Stabilization of flicker-like effects in image sequences
 through local contrast correction` de Julie Delon y colegas.
+
+Ejemplo (Example)
+-------
+Se provee un ejemplo sencillo destinado a programadores que deseen implementar nuevos algoritmos utilizando OFX y OpenCV.
 
 
 ### Compilación en Linux
