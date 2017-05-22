@@ -150,14 +150,14 @@ void HoughSpeedUp(const cv::Mat bin, const int thresholdHough,const int inclinat
 
         float theta = lines[i][1];
 
-        if ((fabs(theta*180 / CV_PI)<=inclination)  )   // solo acepto rectas con inclinacion menor a 10 grados
+        if ((fabs(theta*180 / CV_PI)<=inclination)  )   // solo acepto rectas con inclinacion menor a "inclination" grados
         {
             float rho = lines[i][0];
             double a = cos(theta), b = sin(theta);
             double x0 = a*rho, y0 = b*rho;
             Point pt1, pt2;
             pt1.x = cvRound(x0 + VertMargin*(-b));
-            pt1.y = cvRound(y0 + VertMargin*(a)); //hardcodign cambiar el 1000 no funciona para HD por ejemplo <<<< <----------------
+            pt1.y = cvRound(y0 + VertMargin*(a)); 
             pt2.x = cvRound(x0 - VertMargin*(-b));
             pt2.y = cvRound(y0 - VertMargin*(a));
 
@@ -1400,6 +1400,7 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
                 line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(0,0,255), linesThickness, CV_AA);
             }
             dst=dst_Exc;
+            
             /*
             Mat dst_Exc = src.clone();
             for (size_t i=0;i<Detecciones_MAX.size();i++){
@@ -1414,6 +1415,7 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
 
         	dst=dst_Exc;
         	*/
+        	
         	//Mat binRGB;
             //cvtColor(bin, binRGB, CV_GRAY2BGR); //dst2 guarda detecciones maximales
         	//dst=binRGB;

@@ -848,7 +848,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParamMinLengthHint);
         param->setRange(1, 100);
         param->setDisplayRange(1, 100);
-        //param->setDefault(12);
+        param->setDefault(10);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);
