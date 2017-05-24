@@ -7,7 +7,7 @@ Fue desarrollado por los estudiantes de grado Sebastián Bugna y Juan Andrés Fr
 Estos plugins OFX fueron implementados utilizando:
 [Natron 2.2.7](http://natron.inria.fr), 
 [OpenFX](http://openeffects.org), 
-[OpenCV](http://opencv.org).
+[OpenCV 4.9](http://opencv.org).
 
 Detección semi-automática de cortes (ShotCutDetection)
 -------
