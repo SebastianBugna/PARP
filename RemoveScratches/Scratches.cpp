@@ -1330,7 +1330,7 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
     BinaryDetection(src_bw,bin, scratchWidth, medianDiffThreshold); //Deteccion binaria per-pixel
 
     Mat PM;
-    PixelDensity2(bin,PM); //Calculo mapa densidad pixeles 
+    PixelDensity(bin,PM); //Calculo mapa densidad pixeles 
     //cout << "corre PixelDensity2" << endl;
 
     //float minLength = round(nRows/10); //largo minimo aceptado para un scratch
@@ -1361,6 +1361,7 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
             //----------------IMPRIMO DETECCIONES luego de ppo exclusion -------------------------------
             //Mat cdst3;
             //cvtColor(src, cdst3, CV_GRAY2BGR); //dst2 guarda detecciones maximales
+            
             Mat dst_Exc = Mat::zeros(nRows,nCols, CV_8UC3);
             for (size_t i=0;i<Detecciones_EXC.size();i++){
 
@@ -1374,6 +1375,21 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
 
 
             dst=dst_Exc;
+            
+        	/*
+            Mat dst_Exc = src.clone();
+            for (size_t i=0;i<Detecciones_MAX.size();i++){
+
+                int x1=Detecciones_MAX[i][0];
+                int y1=Detecciones_MAX[i][1];
+                int x2=Detecciones_MAX[i][2];
+                int y2=Detecciones_MAX[i][3];
+
+                line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(0,0,255), linesThickness, CV_AA);
+            }
+
+        	dst=dst_Exc;
+        	*/
             
             dst_Exc.release();
             bin.release();                                    
@@ -1436,6 +1452,7 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
             //Mat cdst3;
             //cvtColor(src, cdst3, CV_GRAY2BGR); //dst2 guarda detecciones maximales
             Mat dst_Exc = Mat::zeros(nRows,nCols, CV_8UC3);
+            
             for (size_t i=0;i<Detecciones_EXC.size();i++){
 
                 int x1=Detecciones_EXC[i][0];
@@ -1445,6 +1462,18 @@ void RemoveScratches(const cv::Mat src, cv::Mat &dst,const int nfaThreshold, con
 
                 line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(0,0,255), linesThickness, CV_AA);
             }
+            /*
+            Mat dst_Exc = Mat::zeros(nRows,nCols, CV_8UC3);
+            for (size_t i=0;i<Detecciones_MAX.size();i++){
+
+                int x1=Detecciones_MAX[i][0];
+                int y1=Detecciones_MAX[i][1];
+                int x2=Detecciones_MAX[i][2];
+                int y2=Detecciones_MAX[i][3];
+
+                line( dst_Exc, Point(x1,y1), Point(x2, y2), Scalar(0,0,255), linesThickness, CV_AA);
+            }
+        	*/
 
             //----------------------INPAINTING RESTAURACION--------------------------------------------------------------------
             Mat dst_Inpaint, mask;

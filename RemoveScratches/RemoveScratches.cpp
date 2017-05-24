@@ -792,7 +792,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParamHoughHint);
         param->setRange(1, 500);
         param->setDisplayRange(1, 500);
-        param->setDefault(120);
+        param->setDefault(160);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);
@@ -834,7 +834,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParaminclinationHint);
         param->setRange(1, 20);
         param->setDisplayRange(1, 20);
-        param->setDefault(5);
+        param->setDefault(3);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);
@@ -862,7 +862,7 @@ PluginRemoveScratchesFactory::describeInContext(OFX::ImageEffectDescriptor &desc
         param->setHint(kParamMinDistanceHint);
         param->setRange(0, 20);
         param->setDisplayRange(0, 20);
-        param->setDefault(3);
+        param->setDefault(5);
         param->setAnimates(true);
         if (page) {
             page->addChild(*param);
